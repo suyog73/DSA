@@ -50,13 +50,10 @@ public:
 
             for (auto it : adj[top])
             {
-                if (top != INT_MAX)
-                {
-                    int node = it.first;
-                    int nDist = it.second;
+                int node = it.first;
+                int nDist = it.second;
 
-                    dist[node] = min(dist[node], dist[top] + nDist);
-                }
+                dist[node] = min(dist[node], dist[top] + nDist);
             }
         }
 
