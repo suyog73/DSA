@@ -1,6 +1,10 @@
 // https://practice.geeksforgeeks.org/problems/articulation-point-1/1
 
 /*
+Articulation point:- 
+    A vertex is said to be an articulation point in a graph if removal of the vertex and associated edges disconnects the graph.
+    Inshort, removal of articulation point increases number of connected components. 
+
 1. Apply dfs till their is a connected unvisited node
 
 2. If it and parent are equal then continue
