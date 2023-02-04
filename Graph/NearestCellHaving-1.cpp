@@ -8,7 +8,11 @@ using namespace std;
 
 class Solution
 {
+
 private:
+    int gfg = 1;      // find cell with nearest 1
+    int leetCode = 0; // find cell with nearest 0
+
     vector<vector<int>> vans;
 
     int dir[4][2] = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
@@ -39,7 +43,7 @@ public:
 
         for (int i = 0; i < m.size(); i++)
             for (int j = 0; j < m[0].size(); j++)
-                if (m[i][j] == 0)
+                if (m[i][j] == leetCode)
                 {
                     q.push({i, j});
                     vans[i][j] = 0;
