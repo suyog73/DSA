@@ -1,6 +1,8 @@
 // https://leetcode.com/problems/surrounded-regions/
 // https://practice.geeksforgeeks.org/problems/replace-os-with-xs0052/1
 
+// Apply DFS from all corner sides
+
 #include <vector>
 #include <iostream>
 using namespace std;
@@ -54,7 +56,7 @@ public:
             if (b[i][0] == 'O' and visited[i][0] == false)
                 dfs(i, 0, b, visited);
 
-            if (b[i][cols - 1] == 'O' and visited[i][cols - 1] == false)
+            if (b[i][rows - 1] == 'O' and visited[i][cols - 1] == false)
                 dfs(i, cols - 1, b, visited);
         }
 
