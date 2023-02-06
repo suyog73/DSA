@@ -16,15 +16,10 @@ using namespace std;
 class Solution
 {
 public:
-    bool isBipartite(vector<vector<int>> &g)
+    // Solution using BFS
+    bool bfs(vector<vector<int>> &g, vector<int> &colors)
     {
         int rows = g.size(), cols = g[0].size();
-
-        // -1 => no color
-        //  0 => yellow color
-        //  1 => red color
-        vector<int> colors(rows, -1);
-        vector<int> adj[rows];
 
         // row, col
         queue<int> q;
@@ -58,6 +53,57 @@ public:
                         }
                     }
                 }
+            }
+        }
+
+        return true;
+    }
+
+    // Solution using DFS
+    bool dfs(int node, vector<vector<int>> &g, vector<int> &colors)
+    {
+        if (colors[node] == -1)
+            colors[node] = 0;
+
+        for (auto &it : g[node])
+        {
+            if (colors[it] == -1)
+            {
+                colors[it] = colors[node] ^ 1;
+                bool ans = dfs(it, g, colors);
+                if (!ans)
+                    return false;
+            }
+            else
+            {
+                if (colors[it] == colors[node])
+                    return true;
+            }
+        }
+
+        return false;
+    }
+
+    bool isBipartite(vector<vector<int>> &g)
+    {
+        int rows = g.size(), cols = g[0].size();
+
+        // -1 => no color
+        //  0 => yellow color
+        //  1 => red color
+        vector<int> colors(rows, -1);
+
+        // bool bfsAnswer = bfs(g, colors);
+        // return bfsAnswer;
+
+        bool dfsAnswer;
+        for (int i = 0; i < rows; i++)
+        {
+            if (colors[i] == -1)
+            {
+                dfsAnswer = dfs(i, g, colors);
+                if (dfsAnswer == false)
+                    return false;
             }
         }
 
