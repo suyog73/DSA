@@ -3,7 +3,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-vector<int> shortestPath(vector<pair<int, int>> edges, int n, int m, int s, int t)
+vector<int> shortestPath(vector<pair<int, int>> &edges, int n, int m, int s, int t)
 {
     vector<int> adj[n];
 
@@ -15,7 +15,6 @@ vector<int> shortestPath(vector<pair<int, int>> edges, int n, int m, int s, int 
         adj[u].push_back(v);
         adj[v].push_back(u);
     }
-
 
     vector<int> parent(n, -1);
     vector<bool> visited(n, false);
