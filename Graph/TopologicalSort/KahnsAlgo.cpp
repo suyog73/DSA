@@ -1,5 +1,7 @@
 // https://practice.geeksforgeeks.org/problems/topological-sort/1
 
+// BFS solution using queue
+
 #include <bits/stdc++.h>
 using namespace std;
 

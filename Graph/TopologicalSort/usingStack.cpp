@@ -1,5 +1,7 @@
 // https://practice.geeksforgeeks.org/problems/topological-sort/1
 
+// DFS solution using stack
+
 #include <bits/stdc++.h>
 using namespace std;
 
