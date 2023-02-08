@@ -8,6 +8,7 @@ using namespace std;
 class Solution
 {
 public:
+    // using set
     vector<int> dijkstra(int v, vector<vector<int>> adj[], int s)
     {
         // Set will store the dist of node and node value in increasing manner
@@ -52,5 +53,40 @@ public:
         }
 
         return distance;
+    }
+
+    // using priority queue
+    // Time complexity:- E*log(V) => E = Edge and V = Vertices
+
+    vector<int> dijkstra(int n, vector<vector<int>> adj[], int s)
+    {
+        // store distance and node
+        priority_queue<pii, vector<pii>, greater<pii>> pq;
+        vector<int> dist(n, INT_MAX);
+
+        dist[s] = 0;
+        pq.push({0, s});
+
+        while (!pq.empty())
+        {
+            int nodeDist = pq.top().first;
+            int node = pq.top().second;
+
+            pq.pop();
+
+            for (auto it : adj[node])
+            {
+                int itNode = it[0];
+                int itWeight = it[1];
+
+                if (dist[itNode] > nodeDist + itWeight)
+                {
+                    dist[itNode] = nodeDist + itWeight;
+
+                    pq.push({dist[itNode], itNode});
+                }
+            }
+        }
+        return dist;
     }
 };
