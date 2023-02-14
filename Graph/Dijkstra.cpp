@@ -60,7 +60,7 @@ public:
 
     vector<int> dijkstra(int n, vector<vector<int>> adj[], int s)
     {
-        // store distance and node
+        // store {distance and node}
         priority_queue<pii, vector<pii>, greater<pii>> pq;
         vector<int> dist(n, INT_MAX);
 
