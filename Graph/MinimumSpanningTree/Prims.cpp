@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <vector>
+#include <queue>
 #include <limits.h>
 using namespace std;
 
@@ -64,5 +65,49 @@ public:
         }
 
         return ans;
+    }
+};
+
+// Using Priority Queue
+
+#define pii pair<int, int>
+class Solution
+{
+public:
+    // Function to find sum of weights of edges of the Minimum Spanning Tree.
+    int spanningTree(int n, vector<vector<int>> adj[])
+    {
+        priority_queue<pii, vector<pii>, greater<pii>> pq;
+        vector<bool> visited(n, false);
+
+        // weight, node
+        pq.push({0, 0});
+
+        int sum = 0;
+
+        while (!pq.empty())
+        {
+            int weight = pq.top().first;
+            int node = pq.top().second;
+
+            pq.pop();
+
+            if (visited[node])
+                continue;
+
+            sum += weight;
+            visited[node] = true;
+
+            for (auto it : adj[node])
+            {
+                int adjNode = it[0];
+                int adjWeight = it[1];
+
+                if (!visited[adjNode])
+                    pq.push({adjWeight, adjNode});
+            }
+        }
+
+        return sum;
     }
 };
