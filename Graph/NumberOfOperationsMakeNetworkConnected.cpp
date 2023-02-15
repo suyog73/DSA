@@ -1,55 +1,9 @@
-// https://leetcode.com/problems/number-of-provinces/
+// https://leetcode.com/problems/number-of-operations-to-make-network-connected/
 
-// Time Complexity:- O(V) + O(V + 2E)
-// Count number of connected components
+// Suyog Patil
 
-#include <vector>
+#include <bits/stdc++.h>
 using namespace std;
-
-// Using Simple DFS
-
-class Solution
-{
-public:
-    void dfs(int node, vector<bool> &visited, vector<int> adj[])
-    {
-        visited[node] = true;
-
-        for (auto it : adj[node])
-            if (!visited[it])
-                dfs(it, visited, adj);
-    }
-
-    int findCircleNum(vector<vector<int>> &g)
-    {
-        int n = g.size();
-        vector<int> adj[n];
-
-        for (int i = 0; i < n; i++)
-        {
-            for (int j = 0; j < n; j++)
-            {
-                if (g[i][j] and i != j)
-                    adj[i].push_back(j);
-            }
-        }
-
-        vector<bool> visited(n, false);
-        int ans = 0;
-        for (int i = 0; i < n; i++)
-        {
-            if (!visited[i])
-            {
-                ans++;
-                dfs(i, visited, adj);
-            }
-        }
-
-        return ans;
-    }
-};
-
-// Using Disjoint Set
 
 // ---------------------Disjoint Set---------------------------//
 
@@ -123,27 +77,33 @@ public:
 class Solution
 {
 public:
-    int findCircleNum(vector<vector<int>> &isConnected)
+    int makeConnected(int n, vector<vector<int>> &c)
     {
-        int n = isConnected.size();
         DisjointSet ds(n);
 
-        for (int i = 0; i < n; i++)
+        int extraEdges = 0;
+        for (auto cc : c)
         {
-            for (int j = 0; j < n; j++)
-            {
-                if (isConnected[i][j])
-                    ds.unionBySize(i, j);
-            }
+            int u = cc[0];
+            int v = cc[1];
+
+            if (ds.findParent(u) != ds.findParent(v))
+                ds.unionBySize(u, v);
+            else
+                extraEdges++;
         }
 
-        int provinces = 0;
+        int ans = 0;
         for (int i = 0; i < n; i++)
         {
             if (i == ds.findParent(i))
-                provinces++;
+                ans++;
         }
 
-        return provinces;
+        ans--; // require ans-1 edges to connect all connected components
+        if (extraEdges >= ans)
+            return ans;
+
+        return -1;
     }
 };

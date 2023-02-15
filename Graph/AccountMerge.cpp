@@ -1,55 +1,7 @@
-// https://leetcode.com/problems/number-of-provinces/
+// https://leetcode.com/problems/accounts-merge/
 
-// Time Complexity:- O(V) + O(V + 2E)
-// Count number of connected components
-
-#include <vector>
+#include <bits/stdc++.h>
 using namespace std;
-
-// Using Simple DFS
-
-class Solution
-{
-public:
-    void dfs(int node, vector<bool> &visited, vector<int> adj[])
-    {
-        visited[node] = true;
-
-        for (auto it : adj[node])
-            if (!visited[it])
-                dfs(it, visited, adj);
-    }
-
-    int findCircleNum(vector<vector<int>> &g)
-    {
-        int n = g.size();
-        vector<int> adj[n];
-
-        for (int i = 0; i < n; i++)
-        {
-            for (int j = 0; j < n; j++)
-            {
-                if (g[i][j] and i != j)
-                    adj[i].push_back(j);
-            }
-        }
-
-        vector<bool> visited(n, false);
-        int ans = 0;
-        for (int i = 0; i < n; i++)
-        {
-            if (!visited[i])
-            {
-                ans++;
-                dfs(i, visited, adj);
-            }
-        }
-
-        return ans;
-    }
-};
-
-// Using Disjoint Set
 
 // ---------------------Disjoint Set---------------------------//
 
@@ -123,27 +75,50 @@ public:
 class Solution
 {
 public:
-    int findCircleNum(vector<vector<int>> &isConnected)
+    vector<vector<string>> accountsMerge(vector<vector<string>> &accounts)
     {
-        int n = isConnected.size();
+        int n = accounts.size();
         DisjointSet ds(n);
+
+        unordered_map<string, int> mp;
 
         for (int i = 0; i < n; i++)
         {
-            for (int j = 0; j < n; j++)
+            for (int j = 1; j < accounts[i].size(); j++)
             {
-                if (isConnected[i][j])
-                    ds.unionBySize(i, j);
+                string mail = accounts[i][j];
+                if (mp.count(mail) == 0)
+                    mp[mail] = i;
+                else
+                    ds.unionBySize(i, mp[mail]);
             }
         }
 
-        int provinces = 0;
-        for (int i = 0; i < n; i++)
+        vector<string> mergeMails[n];
+        for (auto it : mp)
         {
-            if (i == ds.findParent(i))
-                provinces++;
+            string mail = it.first;
+            int node = ds.findParent(it.second);
+
+            mergeMails[node].push_back(mail);
         }
 
-        return provinces;
+        vector<vector<string>> vs;
+        for (int i = 0; i < n; i++)
+        {
+            if (mergeMails[i].size() == 0)
+                continue;
+
+            sort(mergeMails[i].begin(), mergeMails[i].end());
+            vector<string> temp;
+            temp.push_back(accounts[i][0]);
+
+            for (string mm : mergeMails[i])
+                temp.push_back(mm);
+
+            vs.push_back(temp);
+        }
+
+        return vs;
     }
 };

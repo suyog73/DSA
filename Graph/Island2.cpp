@@ -1,55 +1,9 @@
-// https://leetcode.com/problems/number-of-provinces/
+// https://practice.geeksforgeeks.org/problems/number-of-islands/1
 
-// Time Complexity:- O(V) + O(V + 2E)
-// Count number of connected components
+// Suyog Patil
 
-#include <vector>
+#include <bits/stdc++.h>
 using namespace std;
-
-// Using Simple DFS
-
-class Solution
-{
-public:
-    void dfs(int node, vector<bool> &visited, vector<int> adj[])
-    {
-        visited[node] = true;
-
-        for (auto it : adj[node])
-            if (!visited[it])
-                dfs(it, visited, adj);
-    }
-
-    int findCircleNum(vector<vector<int>> &g)
-    {
-        int n = g.size();
-        vector<int> adj[n];
-
-        for (int i = 0; i < n; i++)
-        {
-            for (int j = 0; j < n; j++)
-            {
-                if (g[i][j] and i != j)
-                    adj[i].push_back(j);
-            }
-        }
-
-        vector<bool> visited(n, false);
-        int ans = 0;
-        for (int i = 0; i < n; i++)
-        {
-            if (!visited[i])
-            {
-                ans++;
-                dfs(i, visited, adj);
-            }
-        }
-
-        return ans;
-    }
-};
-
-// Using Disjoint Set
 
 // ---------------------Disjoint Set---------------------------//
 
@@ -122,28 +76,59 @@ public:
 
 class Solution
 {
-public:
-    int findCircleNum(vector<vector<int>> &isConnected)
+    int dx[4] = {1, -1, 0, 0};
+    int dy[4] = {0, 0, -1, 1};
+
+    bool isValid(int i, int j, int rows, int cols)
     {
-        int n = isConnected.size();
-        DisjointSet ds(n);
+        return (i >= 0 and i < rows and j >= 0 and j < cols);
+    }
 
-        for (int i = 0; i < n; i++)
+public:
+    vector<int> numOfIslands(int n, int m, vector<vector<int>> &operators)
+    {
+        int visited[n][m];
+        DisjointSet ds(n * m);
+        memset(visited, false, sizeof(visited));
+
+        vector<int> ans;
+
+        int cnt = 0;
+        for (auto it : operators)
         {
-            for (int j = 0; j < n; j++)
+            int row = it[0];
+            int col = it[1];
+
+            if (visited[row][col])
             {
-                if (isConnected[i][j])
-                    ds.unionBySize(i, j);
+                ans.push_back(cnt);
+                continue;
             }
+
+            visited[row][col] = true;
+            cnt++;
+
+            for (int i = 0; i < 4; i++)
+            {
+                int newR = row + dx[i];
+                int newC = col + dy[i];
+
+                if (isValid(newR, newC, n, m) and visited[newR][newC])
+                {
+                    int currNode = (row * m) + col;
+                    int newNode = (newR * m) + newC;
+
+                    if (ds.findParent(currNode) != ds.findParent(newNode))
+                    {
+                        cnt--;
+                        ds.unionBySize(currNode, newNode);
+                    }
+                }
+            }
+
+            ans.push_back(cnt);
         }
 
-        int provinces = 0;
-        for (int i = 0; i < n; i++)
-        {
-            if (i == ds.findParent(i))
-                provinces++;
-        }
-
-        return provinces;
+        return ans;
     }
 };
