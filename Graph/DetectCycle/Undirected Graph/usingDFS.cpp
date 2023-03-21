@@ -13,7 +13,6 @@ public:
         {
             if (!visited[it])
             {
-                visited[it] = 1;
                 bool cycle = dfs(it, node, adj, visited);
 
                 if (cycle)

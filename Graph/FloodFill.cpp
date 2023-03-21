@@ -10,6 +10,11 @@ class Solution
     int deltaRow[4] = {-1, 0, 1, 0};
     int deltaCol[4] = {0, 1, 0, -1};
 
+    bool isValid(int x, int y, int n, int m)
+    {
+        return (x >= 0 and x < n and y >= 0 and y < m);
+    }
+
 public:
     void dfs(int sr, int sc, vector<vector<int>> &im, vector<vector<int>> &ans, int color, int iniColor)
     {
@@ -23,7 +28,7 @@ public:
             int nrow = sr + deltaRow[i];
             int ncol = sc + deltaCol[i];
 
-            if (nrow >= 0 and nrow < rows and ncol >= 0 and ncol < cols and ans[nrow][ncol] != color and im[nrow][ncol] == iniColor)
+            if (isValid(nrow, ncol, rows, cols) and ans[nrow][ncol] != color and im[nrow][ncol] == iniColor)
             {
                 dfs(nrow, ncol, im, ans, color, iniColor);
             }
@@ -40,5 +45,7 @@ public:
         int iniColor = im[sr][sc];
 
         dfs(sr, sc, im, ans, color, iniColor);
+
+        return ans;
     }
 };
